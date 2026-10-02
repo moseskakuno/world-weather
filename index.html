@@ -11,7 +11,7 @@
 
     <meta
         name="description"
-        content="Current weather and 7-day forecasts for 1,000 major cities around the world."
+        content="Current weather and 7-day forecasts for cities around the world."
     >
 
     <title>World Weather</title>
@@ -36,7 +36,7 @@
 
             <p class="subtitle">
                 Current conditions and 7-day forecasts
-                for major cities around the world.
+                for cities around the world.
             </p>
 
         </div>
@@ -45,6 +45,8 @@
 
 
     <main>
+
+        <!-- DASHBOARD INFORMATION -->
 
         <section class="dashboard-info">
 
@@ -67,6 +69,69 @@
         </section>
 
 
+        <!-- CITY SEARCH -->
+
+        <section class="search-section">
+
+            <div class="search-box">
+
+                <label
+                    for="city-search"
+                    class="search-label"
+                >
+                    Search for a city
+                </label>
+
+                <div class="search-input-wrapper">
+
+                    <span
+                        class="search-icon"
+                        aria-hidden="true"
+                    >
+                        🔍
+                    </span>
+
+                    <input
+                        type="search"
+                        id="city-search"
+                        class="city-search"
+                        placeholder="Search city..."
+                        autocomplete="off"
+                        spellcheck="false"
+                        aria-label="Search for a city"
+                        aria-controls="search-results"
+                    >
+
+                    <button
+                        type="button"
+                        id="clear-search"
+                        class="clear-search"
+                        aria-label="Clear search"
+                        hidden
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <!-- SEARCH RESULTS -->
+
+                <div
+                    id="search-results"
+                    class="search-results"
+                    role="listbox"
+                    aria-label="City search results"
+                >
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- WEATHER CARDS -->
+
         <section
             id="weather-container"
             class="weather-container"
@@ -77,6 +142,8 @@
             </div>
         </section>
 
+
+        <!-- PAGINATION -->
 
         <nav
             class="pagination-container"
@@ -94,30 +161,34 @@
     </main>
 
 
-    <footer class="site-footer">
-    <p>
-        Weather data provided by
-        <a
-            href="https://open-meteo.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-        >
-            Open-Meteo
-        </a>
-    </p>
+    <!-- FOOTER -->
 
-    <p>
-        City data sourced from
-        <a
-            href="https://github.com/joelacus/world-cities"
-            target="_blank"
-            rel="noopener noreferrer"
-        >
-            World Cities / GeoNames
-        </a>
-        under CC BY 4.0.
-    </p>
-</footer>
+    <footer class="site-footer">
+
+        <p>
+            Weather data provided by
+            <a
+                href="https://open-meteo.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Open-Meteo
+            </a>
+        </p>
+
+        <p>
+            City data sourced from
+            <a
+                href="https://github.com/joelacus/world-cities"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                World Cities / GeoNames
+            </a>
+            under CC BY 4.0.
+        </p>
+
+    </footer>
 
 
     <script src="script.js"></script>

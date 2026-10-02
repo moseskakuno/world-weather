@@ -16,6 +16,8 @@ const ITEMS_PER_PAGE = 10;
 
 const CACHE_DURATION = 5 * 60 * 1000;
 
+const SEARCH_RESULTS_LIMIT = 8;
+
 
 /* =====================================================
    APPLICATION STATE
@@ -23,9 +25,13 @@ const CACHE_DURATION = 5 * 60 * 1000;
 
 let cities = [];
 
+let filteredCities = [];
+
 let currentPage = 1;
 
 let totalPages = 0;
+
+let isSearchMode = false;
 
 
 /* =====================================================
@@ -37,19 +43,40 @@ const weatherContainer =
         "weather-container"
     );
 
+
 const pagination =
     document.getElementById(
         "pagination"
     );
+
 
 const cityCount =
     document.getElementById(
         "city-count"
     );
 
+
 const pageInfo =
     document.getElementById(
         "page-info"
+    );
+
+
+const citySearch =
+    document.getElementById(
+        "city-search"
+    );
+
+
+const searchResults =
+    document.getElementById(
+        "search-results"
+    );
+
+
+const clearSearch =
+    document.getElementById(
+        "clear-search"
     );
 
 
@@ -205,7 +232,7 @@ const WEATHER_CODES = {
 
 
 /* =====================================================
-   GET WEATHER INFORMATION FROM WMO CODE
+   GET WEATHER INFORMATION
    ===================================================== */
 
 function getWeatherInfo(code) {
@@ -227,49 +254,104 @@ function getWeatherInfo(code) {
    ===================================================== */
 
 async function loadCities() {
-    const response = await fetch("./cities.json");
+
+    const response =
+        await fetch(CITY_DATA_URL);
+
 
     if (!response.ok) {
-        throw new Error("Could not load cities.json");
+
+        throw new Error(
+            "Could not load cities.json"
+        );
+
     }
 
-    cities = await response.json();
 
-    //DEBUG
-     if (cities.length === 0) {
+    cities =
+        await response.json();
 
-            throw new Error(
-                "No valid cities found."
-            );
 
-        } else {            
-            for (const city of cities) {
-                if (typeof city.name == "string" && typeof city.country == "string") {
-                    city.name = city.name.trim();
-                    city.country = city.country.trim();
-                    console.log(city.name + ", " + city.country);
-                } 
-            }  
-            console.log("Number of cities: " + cities.length);                                   
+    if (
+        !Array.isArray(cities) ||
+        cities.length === 0
+    ) {
+
+        throw new Error(
+            "No valid cities found."
+        );
+
+    }
+
+
+    /*
+       Clean city names and countries.
+    */
+
+    for (const city of cities) {
+
+        if (
+            typeof city.name === "string"
+        ) {
+
+            city.name =
+                city.name.trim();
+
         }
 
-    //END DEBUG
 
-    console.log("Total cities:", cities.length);
+        if (
+            typeof city.country === "string"
+        ) {
+
+            city.country =
+                city.country.trim();
+
+        }
+
+    }
+
+
+    /*
+       Start with all cities.
+    */
+
+    filteredCities =
+        cities;
+
+
+    cityCount.textContent =
+        cities.length.toLocaleString();
+
+
+    totalPages =
+        Math.ceil(
+            filteredCities.length /
+            ITEMS_PER_PAGE
+        );
+
+
     console.log(
-        "Total pages:",
-        Math.ceil(cities.length / ITEMS_PER_PAGE)
+        "Total cities:",
+        cities.length
     );
 
-    totalPages = Math.ceil(cities.length / ITEMS_PER_PAGE);
+
+    console.log(
+        "Total pages:",
+        totalPages
+    );
+
 
     createPagination();
+
     showPage(1);
+
 }
 
 
 /* =====================================================
-   FETCH WEATHER FOR CURRENT PAGE
+   FETCH WEATHER FOR CITIES
    ===================================================== */
 
 async function getWeatherForCities(
@@ -289,23 +371,38 @@ async function getWeatherForCities(
 
 
     const currentVariables = [
+
         "temperature_2m",
+
         "apparent_temperature",
+
         "relative_humidity_2m",
+
         "weather_code",
+
         "wind_speed_10m"
+
     ].join(",");
 
 
     const dailyVariables = [
+
         "weather_code",
+
         "temperature_2m_max",
+
         "temperature_2m_min",
+
         "apparent_temperature_max",
+
         "apparent_temperature_min",
+
         "sunrise",
+
         "sunset",
+
         "precipitation_probability_max"
+
     ].join(",");
 
 
@@ -348,7 +445,7 @@ async function getWeatherForCities(
 
 
 /* =====================================================
-   FORMAT TIME
+   FORMAT LOCAL TIME
    ===================================================== */
 
 function formatLocalTime(
@@ -378,11 +475,15 @@ function formatLocalTime(
             }
         ).format(date);
 
+
     } catch {
 
-        return isoTime
-            .split("T")[1]
-            ?.slice(0, 5) || "—";
+        return (
+            isoTime
+                .split("T")[1]
+                ?.slice(0, 5) ||
+            "—"
+        );
 
     }
 
@@ -436,66 +537,72 @@ function createForecastHTML(
 
 
     return daily.time
-        .map((date, index) => {
+        .map(
+            (date, index) => {
 
-            const weatherInfo =
-                getWeatherInfo(
-                    daily.weather_code[index]
-                );
-
-
-            const maxTemp =
-                Math.round(
-                    daily.temperature_2m_max[index]
-                );
+                const weatherInfo =
+                    getWeatherInfo(
+                        daily.weather_code[index]
+                    );
 
 
-            const minTemp =
-                Math.round(
-                    daily.temperature_2m_min[index]
-                );
+                const maxTemp =
+                    Math.round(
+                        daily.temperature_2m_max[
+                            index
+                        ]
+                    );
 
 
-            const precipitation =
-                daily
-                    .precipitation_probability_max[
-                        index
-                    ];
+                const minTemp =
+                    Math.round(
+                        daily.temperature_2m_min[
+                            index
+                        ]
+                    );
 
 
-            return `
+                const precipitation =
+                    daily
+                        .precipitation_probability_max[
+                            index
+                        ];
 
-                <div class="forecast-day">
 
-                    <div class="forecast-date">
-                        ${formatForecastDate(
-                            date
-                        )}
+                return `
+
+                    <div class="forecast-day">
+
+                        <div class="forecast-date">
+                            ${formatForecastDate(
+                                date
+                            )}
+                        </div>
+
+                        <div
+                            class="forecast-icon"
+                            aria-label="${
+                                weatherInfo.description
+                            }"
+                        >
+                            ${weatherInfo.icon}
+                        </div>
+
+                        <div class="forecast-temp">
+                            ${maxTemp}° /
+                            ${minTemp}°
+                        </div>
+
+                        <div class="forecast-rain">
+                            💧 ${precipitation ?? 0}%
+                        </div>
+
                     </div>
 
-                    <div
-                        class="forecast-icon"
-                        aria-label="${
-                            weatherInfo.description
-                        }"
-                    >
-                        ${weatherInfo.icon}
-                    </div>
+                `;
 
-                    <div class="forecast-temp">
-                        ${maxTemp}° /
-                        ${minTemp}°
-                    </div>
-
-                    <div class="forecast-rain">
-                        💧 ${precipitation ?? 0}%
-                    </div>
-
-                </div>
-
-            `;
-
-        })
+            }
+        )
         .join("");
 
 }
@@ -749,22 +856,37 @@ function displayWeather(
 
 
 /* =====================================================
-   ESCAPE USER/DATA CONTENT
+   ESCAPE HTML
    ===================================================== */
 
 function escapeHTML(value) {
 
     return String(value)
 
-        .replaceAll("&", "&amp;")
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
 
-        .replaceAll("<", "&lt;")
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
 
-        .replaceAll(">", "&gt;")
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
 
-        .replaceAll('"', "&quot;")
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
 
-        .replaceAll("'", "&#039;");
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 
 }
 
@@ -822,18 +944,589 @@ function showApplicationError(
 
 
 /* =====================================================
-   DISPLAY PAGE
+   SEARCH CITY DATABASE
    ===================================================== */
 
-async function showPage(
-    pageNumber
+function searchCities(
+    searchTerm
 ) {
 
-    if (!cities.length) {
+    const term =
+        searchTerm
+            .trim()
+            .toLowerCase();
+
+
+    if (!term) {
+
+        return [];
+
+    }
+
+
+    /*
+       Search both city name and country.
+
+       Examples:
+
+       London
+
+       Japan
+
+       London United Kingdom
+    */
+
+    return cities
+        .filter(city => {
+
+            const cityName =
+                String(
+                    city.name || ""
+                ).toLowerCase();
+
+
+            const country =
+                String(
+                    city.country || ""
+                ).toLowerCase();
+
+
+            const countryCode =
+                String(
+                    city.countryCode || ""
+                ).toLowerCase();
+
+
+            const searchableText =
+                `${cityName} ${country} ${countryCode}`;
+
+
+            return searchableText.includes(
+                term
+            );
+
+        })
+        .sort(
+            (a, b) => {
+
+                const aName =
+                    a.name
+                        .toLowerCase();
+
+
+                const bName =
+                    b.name
+                        .toLowerCase();
+
+
+                /*
+                   Exact city-name matches
+                   appear first.
+                */
+
+                const aExact =
+                    aName === term
+                        ? 0
+                        : 1;
+
+
+                const bExact =
+                    bName === term
+                        ? 0
+                        : 1;
+
+
+                if (
+                    aExact !== bExact
+                ) {
+
+                    return (
+                        aExact -
+                        bExact
+                    );
+
+                }
+
+
+                /*
+                   Larger cities appear
+                   before smaller cities.
+                */
+
+                return (
+                    (Number(b.population) || 0) -
+                    (Number(a.population) || 0)
+                );
+
+            }
+        );
+
+}
+
+
+/* =====================================================
+   DISPLAY SEARCH SUGGESTIONS
+   ===================================================== */
+
+function displaySearchResults(
+    results
+) {
+
+    searchResults.innerHTML = "";
+
+
+    if (!results.length) {
+
+        searchResults.innerHTML = `
+
+            <div class="search-message">
+                No cities found.
+            </div>
+
+        `;
 
         return;
 
     }
+
+
+    const resultsToShow =
+        results.slice(
+            0,
+            SEARCH_RESULTS_LIMIT
+        );
+
+
+    resultsToShow.forEach(
+        city => {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.type =
+                "button";
+
+
+            button.className =
+                "search-result";
+
+
+            button.setAttribute(
+                "role",
+                "option"
+            );
+
+
+            button.innerHTML = `
+
+                <span class="search-result-city">
+                    ${escapeHTML(
+                        city.name
+                    )}
+                </span>
+
+                <span class="search-result-country">
+                    ${escapeHTML(
+                        city.country
+                    )}
+                </span>
+
+            `;
+
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    selectSearchResult(
+                        city
+                    );
+
+                }
+            );
+
+
+            searchResults.appendChild(
+                button
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   SELECT SEARCH RESULT
+   ===================================================== */
+
+function selectSearchResult(
+    selectedCity
+) {
+
+    /*
+       Put selected city name
+       into the search box.
+    */
+
+    citySearch.value =
+        selectedCity.name;
+
+
+    clearSearch.hidden =
+        false;
+
+
+    /*
+       Close suggestions.
+    */
+
+    searchResults.innerHTML = "";
+
+
+    /*
+       Show only the selected city.
+    */
+
+    filteredCities = [
+        selectedCity
+    ];
+
+
+    isSearchMode = true;
+
+    currentPage = 1;
+
+    totalPages = 1;
+
+
+    cityCount.textContent =
+        "1";
+
+
+    pageInfo.textContent =
+        "Search result";
+
+
+    pagination.innerHTML = "";
+
+
+    showPage(
+        1,
+        false
+    );
+
+
+    /*
+       Move the user to the weather card.
+    */
+
+    weatherContainer.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+}
+
+
+/* =====================================================
+   PERFORM SEARCH
+   ===================================================== */
+
+function performSearch() {
+
+    const searchTerm =
+        citySearch.value.trim();
+
+
+    clearSearch.hidden =
+        searchTerm.length === 0;
+
+
+    /*
+       Empty search = return
+       to normal browsing.
+    */
+
+    if (!searchTerm) {
+
+        isSearchMode = false;
+
+        filteredCities =
+            cities;
+
+
+        currentPage = 1;
+
+
+        totalPages =
+            Math.ceil(
+                filteredCities.length /
+                ITEMS_PER_PAGE
+            );
+
+
+        cityCount.textContent =
+            cities.length.toLocaleString();
+
+
+        createPagination();
+
+        searchResults.innerHTML = "";
+
+        showPage(1);
+
+        return;
+
+    }
+
+
+    const results =
+        searchCities(
+            searchTerm
+        );
+
+
+    displaySearchResults(
+        results
+    );
+
+
+    /*
+       The user can see matching
+       city suggestions immediately.
+    */
+
+    if (!results.length) {
+
+        isSearchMode = true;
+
+        filteredCities = [];
+
+        currentPage = 1;
+
+        totalPages = 0;
+
+        cityCount.textContent = "0";
+
+        pageInfo.textContent =
+            "No results";
+
+        pagination.innerHTML = "";
+
+
+        weatherContainer.innerHTML = `
+
+            <div class="error">
+
+                No cities matching
+                "<strong>${escapeHTML(
+                    searchTerm
+                )}</strong>"
+                were found.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /*
+       Pressing Enter without choosing
+       a suggestion shows all matching
+       cities, up to the normal page size.
+    */
+
+    isSearchMode = true;
+
+    filteredCities =
+        results;
+
+    currentPage = 1;
+
+    totalPages =
+        Math.ceil(
+            filteredCities.length /
+            ITEMS_PER_PAGE
+        );
+
+
+    cityCount.textContent =
+        results.length.toLocaleString();
+
+
+    createPagination();
+
+    showPage(1);
+
+}
+
+
+/* =====================================================
+   CLEAR SEARCH
+   ===================================================== */
+
+function resetSearch() {
+
+    citySearch.value = "";
+
+    clearSearch.hidden = true;
+
+    searchResults.innerHTML = "";
+
+    isSearchMode = false;
+
+    filteredCities =
+        cities;
+
+    currentPage = 1;
+
+    totalPages =
+        Math.ceil(
+            cities.length /
+            ITEMS_PER_PAGE
+        );
+
+
+    cityCount.textContent =
+        cities.length.toLocaleString();
+
+
+    createPagination();
+
+    showPage(1);
+
+    citySearch.focus();
+
+}
+
+
+/* =====================================================
+   SEARCH EVENT LISTENERS
+   ===================================================== */
+
+citySearch.addEventListener(
+    "input",
+    () => {
+
+        const value =
+            citySearch.value.trim();
+
+
+        clearSearch.hidden =
+            value.length === 0;
+
+
+        if (!value) {
+
+            searchResults.innerHTML = "";
+
+            return;
+
+        }
+
+
+        const results =
+            searchCities(value);
+
+
+        displaySearchResults(
+            results
+        );
+
+    }
+);
+
+
+citySearch.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            event.preventDefault();
+
+            performSearch();
+
+        }
+
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            searchResults.innerHTML = "";
+
+        }
+
+    }
+);
+
+
+clearSearch.addEventListener(
+    "click",
+    resetSearch
+);
+
+
+/* =====================================================
+   CLICK OUTSIDE SEARCH
+   ===================================================== */
+
+document.addEventListener(
+    "click",
+    event => {
+
+        if (
+            !event.target.closest(
+                ".search-box"
+            )
+        ) {
+
+            searchResults.innerHTML = "";
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   DISPLAY PAGE
+   ===================================================== */
+
+async function showPage(
+    pageNumber,
+    updatePagination = true
+) {
+
+    if (
+        !filteredCities.length
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+       Calculate number of pages
+       for the current dataset.
+    */
+
+    totalPages =
+        Math.ceil(
+            filteredCities.length /
+            ITEMS_PER_PAGE
+        );
 
 
     currentPage =
@@ -857,25 +1550,34 @@ async function showPage(
 
 
     const citiesForPage =
-        cities.slice(
+        filteredCities.slice(
             startIndex,
             endIndex
         );
 
 
-    pageInfo.textContent =
-        `Page ${currentPage} of ${totalPages}`;
+    if (isSearchMode) {
+
+        pageInfo.textContent =
+            `Search: ${currentPage} of ${totalPages}`;
+
+    } else {
+
+        pageInfo.textContent =
+            `Page ${currentPage} of ${totalPages}`;
+
+    }
 
 
     showLoading();
 
 
-    /*
-       Fetch only the ten cities
-       currently visible.
-    */
-
     try {
+
+        /*
+           Fetch only the cities
+           currently visible.
+        */
 
         const weatherData =
             await getWeatherForCities(
@@ -889,7 +1591,11 @@ async function showPage(
         );
 
 
-        createPagination();
+        if (updatePagination) {
+
+            createPagination();
+
+        }
 
 
         window.scrollTo({
@@ -920,88 +1626,40 @@ function createPagination() {
     pagination.innerHTML = "";
 
 
-    /*
-       Previous
-    */
+    if (
+        totalPages <= 1
+    ) {
 
-    const previousLi =
-        document.createElement("li");
-
-
-    const previous =
-        document.createElement("a");
-
-
-    previous.href = "#";
-
-    previous.textContent = "«";
-
-    previous.setAttribute(
-        "aria-label",
-        "Previous page"
-    );
-
-
-    if (currentPage === 1) {
-
-        previous.classList.add(
-            "disabled"
-        );
+        return;
 
     }
 
 
-    previous.addEventListener(
-        "click",
-        event => {
-
-            event.preventDefault();
-
-
-            if (currentPage > 1) {
-
-                showPage(
-                    currentPage - 1
-                );
-
-            }
-
-        }
-    );
-
-
-    previousLi.appendChild(
-        previous
-    );
-
-
-    pagination.appendChild(
-        previousLi
-    );
-
-
     /*
-       Page numbers
+       Create a pagination button.
     */
 
-    for (
-        let page = 1;
-        page <= totalPages;
-        page++
+    function createPageLink(
+        page,
+        text,
+        className = ""
     ) {
 
         const li =
-            document.createElement("li");
+            document.createElement(
+                "li"
+            );
 
 
         const link =
-            document.createElement("a");
+            document.createElement(
+                "a"
+            );
 
 
         link.href = "#";
 
-        link.textContent = page;
-
+        link.textContent = text;
 
         link.setAttribute(
             "aria-label",
@@ -1020,6 +1678,15 @@ function createPagination() {
             link.setAttribute(
                 "aria-current",
                 "page"
+            );
+
+        }
+
+
+        if (className) {
+
+            link.classList.add(
+                className
             );
 
         }
@@ -1045,15 +1712,189 @@ function createPagination() {
 
 
     /*
-       Next
+       Previous button.
+    */
+
+    const previousLi =
+        document.createElement(
+            "li"
+        );
+
+
+    const previous =
+        document.createElement(
+            "a"
+        );
+
+
+    previous.href = "#";
+
+    previous.textContent = "«";
+
+    previous.setAttribute(
+        "aria-label",
+        "Previous page"
+    );
+
+
+    if (
+        currentPage === 1
+    ) {
+
+        previous.classList.add(
+            "disabled"
+        );
+
+    }
+
+
+    previous.addEventListener(
+        "click",
+        event => {
+
+            event.preventDefault();
+
+
+            if (
+                currentPage > 1
+            ) {
+
+                showPage(
+                    currentPage - 1
+                );
+
+            }
+
+        }
+    );
+
+
+    previousLi.appendChild(
+        previous
+    );
+
+
+    pagination.appendChild(
+        previousLi
+    );
+
+
+    /*
+       Determine which page numbers
+       should be visible.
+
+       This prevents thousands of
+       buttons from being created.
+    */
+
+    const pages = new Set();
+
+
+    pages.add(1);
+
+    pages.add(totalPages);
+
+
+    for (
+        let page =
+            currentPage - 2;
+        page <=
+            currentPage + 2;
+        page++
+    ) {
+
+        if (
+            page >= 1 &&
+            page <= totalPages
+        ) {
+
+            pages.add(page);
+
+        }
+
+    }
+
+
+    const sortedPages =
+        [...pages].sort(
+            (a, b) => a - b
+        );
+
+
+    let previousPage = null;
+
+
+    sortedPages.forEach(
+        page => {
+
+            /*
+               Add ellipsis where
+               pages are skipped.
+            */
+
+            if (
+                previousPage !== null &&
+                page - previousPage > 1
+            ) {
+
+                const ellipsisLi =
+                    document.createElement(
+                        "li"
+                    );
+
+
+                const ellipsis =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                ellipsis.className =
+                    "ellipsis";
+
+
+                ellipsis.textContent =
+                    "...";
+
+
+                ellipsisLi.appendChild(
+                    ellipsis
+                );
+
+
+                pagination.appendChild(
+                    ellipsisLi
+                );
+
+            }
+
+
+            createPageLink(
+                page,
+                page
+            );
+
+
+            previousPage = page;
+
+        }
+    );
+
+
+    /*
+       Next button.
     */
 
     const nextLi =
-        document.createElement("li");
+        document.createElement(
+            "li"
+        );
 
 
     const next =
-        document.createElement("a");
+        document.createElement(
+            "a"
+        );
 
 
     next.href = "#";
@@ -1099,18 +1940,31 @@ function createPagination() {
     );
 
 
-    nextLi.appendChild(next);
+    nextLi.appendChild(
+        next
+    );
 
-    pagination.appendChild(nextLi);
+
+    pagination.appendChild(
+        nextLi
+    );
 
 }
+
 
 /* =====================================================
    START APPLICATION
    ===================================================== */
 
-loadCities();
+loadCities()
+    .catch(error => {
 
+        console.error(error);
 
+        showApplicationError(
+            error.message ||
+            "Unable to load the application."
+        );
 
+    });
 
