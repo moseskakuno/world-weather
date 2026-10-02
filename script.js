@@ -458,6 +458,18 @@ function formatLocalTime(isoTime, timezone) {
 
         // Open-Meteo returns the local time for the requested city.
         // Do not convert it through the browser's local timezone.
+
+        /* 
+        * Open-Meteo returns current.time, 
+        * daily.sunrise, and daily.sunset 
+        * as local times when timezone=auto 
+        * is used in the API request. 
+        * Therefore, do NOT pass these values 
+        * through new Date(), because JavaScript 
+        * may interpret the timezone incorrectly. 
+        * We simply extract the HH:MM portion 
+        * returned by Open-Meteo. 
+        */
         const timePart =
             isoTime
                 .split("T")[1]
