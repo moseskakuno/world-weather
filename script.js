@@ -448,42 +448,26 @@ async function getWeatherForCities(
    FORMAT LOCAL TIME
    ===================================================== */
 
-function formatLocalTime(
-    isoTime,
-    timezone
-) {
+function formatLocalTime(isoTime, timezone) {
 
     if (!isoTime) {
-
         return "—";
-
     }
-
 
     try {
 
-        const date =
-            new Date(isoTime);
+        // Open-Meteo returns the local time for the requested city.
+        // Do not convert it through the browser's local timezone.
+        const timePart =
+            isoTime
+                .split("T")[1]
+                ?.slice(0, 5);
 
-
-        return new Intl.DateTimeFormat(
-            "en",
-            {
-                hour: "numeric",
-                minute: "2-digit",
-                timeZone: timezone
-            }
-        ).format(date);
-
+        return timePart || "—";
 
     } catch {
 
-        return (
-            isoTime
-                .split("T")[1]
-                ?.slice(0, 5) ||
-            "—"
-        );
+        return "—";
 
     }
 
