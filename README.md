@@ -309,6 +309,7 @@ END OF WORLD WEATHER README
 
 
 ============================================
+
 README for GeoNames Gazetteer extract files:
 
 ===========================================
@@ -450,6 +451,7 @@ The forum : https://forum.geonames.org
 or the google group : https://groups.google.com/group/geonames
 
 ===================================================
+
 END OF README for GeoNames Gazetteer extract files:
 
 ===================================================
