@@ -1,7 +1,7 @@
-# world-weather
+# World-weather README
 
-WORLD WEATHER
-=============
+WORLD WEATHER README
+====================
 
 A Global City Weather Dashboard
 
@@ -14,8 +14,8 @@ The application lets users browse a worldwide city database, search for
 specific cities, distinguish cities with the same name, and view live weather
 information based on each city's geographic coordinates.
 
-The project is built with plain HTML, CSS, and JavaScript and is deployed on
-Vercel.
+The project is built with plain HTML, CSS, and JavaScript and is available on
+(https://kanamkafe.org/world-weather/).
 
 
 KEY FEATURES
@@ -91,7 +91,7 @@ CITY DATABASE
 - Local JSON file: cities.json
 
 HOSTING
-- Vercel
+- https://kanamkafe.org/world-weather/
 
 SOURCE CONTROL
 - Git / GitHub
@@ -222,10 +222,10 @@ The interface includes:
 DEPLOYMENT
 ----------
 
-World Weather is deployed on Vercel.
+World Weather is available on (https://kanamkafe.org/world-weather/).
 
 The project can be maintained through Git and GitHub. After changes are
-committed and pushed to the connected repository, Vercel can deploy the
+committed and pushed to the connected repository, https://kanamkafe.org/world-weather/ can then render the
 updated application.
 
 The application does not require a traditional server-side backend for its
@@ -268,11 +268,11 @@ When changing script.js:
 - Test the 7-day forecast.
 - Test error handling.
 
-When deploying:
+When rendering:
 - Save all changes.
 - Commit changes to Git.
 - Push changes to GitHub.
-- Confirm the Vercel deployment succeeds.
+- Confirm the https://kanamkafe.org/world-weather/ rendering succeeds.
 - Test the live application, especially search, city selection, weather,
   and pagination.
 
@@ -301,17 +301,17 @@ simple web application.
 
 The project intentionally uses standard web technologies: HTML, CSS, and
 JavaScript. This keeps the application lightweight, understandable,
-maintainable, and straightforward to deploy on Vercel.
+maintainable, and straightforward to render on https://kanamkafe.org/world-weather/.
 
 
-END OF README
-=============
+END OF WORLD WEATHER README
+===========================
 
 
-============================================================================================================
-Readme for GeoNames Gazetteer extract files:
+============================================
+README for GeoNames Gazetteer extract files:
 
-============================================================================================================
+===========================================
 
 This work is licensed under a Creative Commons Attribution 4.0 License,
 see https://creativecommons.org/licenses/by/4.0/
@@ -448,3 +448,8 @@ https://forum.geonames.org/gforum/forums/show/6.page
 The forum : https://forum.geonames.org
 
 or the google group : https://groups.google.com/group/geonames
+
+===================================================
+EEND OF README for GeoNames Gazetteer extract files:
+
+===================================================
