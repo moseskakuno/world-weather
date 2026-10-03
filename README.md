@@ -450,6 +450,6 @@ The forum : https://forum.geonames.org
 or the google group : https://groups.google.com/group/geonames
 
 ===================================================
-EEND OF README for GeoNames Gazetteer extract files:
+END OF README for GeoNames Gazetteer extract files:
 
 ===================================================
