@@ -15,7 +15,7 @@ specific cities, distinguish cities with the same name, and view live weather
 information based on each city's geographic coordinates.
 
 The project is built with plain HTML, CSS, and JavaScript and is available on
-(https://kanamkafe.org/world-weather/).
+(https://kanamkafe.org/world-weather).
 
 
 KEY FEATURES
@@ -91,7 +91,7 @@ CITY DATABASE
 - Local JSON file: cities.json
 
 HOSTING
-- https://kanamkafe.org/world-weather/
+- https://kanamkafe.org/world-weather
 
 SOURCE CONTROL
 - Git / GitHub
@@ -222,10 +222,10 @@ The interface includes:
 DEPLOYMENT
 ----------
 
-World Weather is available on (https://kanamkafe.org/world-weather/).
+World Weather is available on (https://kanamkafe.org/world-weather).
 
 The project can be maintained through Git and GitHub. After changes are
-committed and pushed to the connected repository, https://kanamkafe.org/world-weather/ can then render the
+committed and pushed to the connected repository, https://kanamkafe.org/world-weather can then render the
 updated application.
 
 The application does not require a traditional server-side backend for its
@@ -272,7 +272,7 @@ When rendering:
 - Save all changes.
 - Commit changes to Git.
 - Push changes to GitHub.
-- Confirm the https://kanamkafe.org/world-weather/ rendering succeeds.
+- Confirm the https://kanamkafe.org/world-weather rendering succeeds.
 - Test the live application, especially search, city selection, weather,
   and pagination.
 
@@ -301,7 +301,7 @@ simple web application.
 
 The project intentionally uses standard web technologies: HTML, CSS, and
 JavaScript. This keeps the application lightweight, understandable,
-maintainable, and straightforward to render on https://kanamkafe.org/world-weather/.
+maintainable, and straightforward to render on https://kanamkafe.org/world-weather.
 
 
 END OF WORLD WEATHER README
