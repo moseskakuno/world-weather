@@ -4,7 +4,7 @@ A Global City Weather Dashboard
 
 PROJECT OVERVIEW
 ----------------
-World-Weather by KAFE is a responsive web application that provides current weather conditions and 7-day forecasts for cities around the world.
+World-Weather by KAFE is a responsive web application that provides current weather conditions and 7-day forecasts for cities around the world. However, the application is a client-side web application and does not require a traditional server-side backend for its core functionality. Weather data is requested directly from the Open-Meteo API by the user's browser.
 
 The application lets users browse a worldwide city database, search for specific cities, distinguish cities with the same name, and view live weather information based on each city's geographic coordinates. 
 
@@ -277,7 +277,7 @@ The project intentionally uses standard web technologies: HTML, CSS, and JavaScr
 
 © 2026 Moses Ochieng Akuno / KAFE. All rights reserved.
 
-World-Weather by KAFE, including its original source code, original artwork, logo, branding, website content, documentation, and original design elements, is protected by applicable copyright and other intellectual-property laws.
+World-Weather by KAFE's original source code, original artwork, logo, branding, website content, documentation, and original design elements are protected by applicable copyright and other intellectual-property laws. Third-party data and materials remain subject to their respective licenses and terms.
 
 The source code is publicly available on GitHub for viewing and reference. No license is granted to reproduce, distribute, modify, republish, or commercially exploit the original World-Weather by KAFE source code or original creative materials, except where expressly permitted by the copyright owner or by applicable third-party licenses.
 
@@ -285,33 +285,37 @@ Third-party data and services used by the application remain subject to their re
 
 ## Third-Party Data Attribution
 
-### GeoNames
+### City and Geographical Data
 
-The city and geographical data used by this application is based in part
-on data from GeoNames.
-
-GeoNames data is licensed under the Creative Commons Attribution 4.0
-International License (CC BY 4.0).
+The city and geographical data used by World-Weather by KAFE is based in part on GeoNames data and the World Cities dataset
+maintained by joelacus.
 
 Source:
+
 https://www.geonames.org/
 
-The GeoNames data is provided "as is" without warranty regarding accuracy, timeliness, or completeness.
+https://github.com/joelacus/world-cities
+
+The World Cities dataset is licensed under the Creative Commons Attribution 4.0 International License (CC BY 4.0).
+
+GeoNames data is provided "as is" without warranty regarding accuracy, timeliness, or completeness.
+
+The applicable third-party data remains subject to its original license and terms.
 
 ## Weather Data Attribution
 
+Weather Data Attribution.
 Weather data is provided by Open-Meteo.
 
-Open-Meteo weather data is licensed under the Creative Commons Attribution 4.0 International License (CC BY 4.0).
+Open-Meteo provides access to weather data that is licensed under the Creative Commons Attribution 4.0 International
+License (CC BY 4.0), subject to the applicable data-source and service terms.
 
 Source:
-
 https://open-meteo.com/
 
-The Open-Meteo free API is intended for non-commercial use. Commercial use is subject to Open-Meteo's applicable commercial
-API licensing and subscription terms.
+Attribution is provided in accordance with the applicable Open-Meteo and underlying data-source licensing requirements.
 
-Weather data attribution is provided in accordance with the applicable Open-Meteo and underlying data-source licensing
-requirements.
+The free Open-Meteo API is intended for non-commercial use. Commercial API usage is subject to Open-Meteo's applicable
+commercial API licensing and subscription terms.
 
 END of World-Weather by KAFE README.
