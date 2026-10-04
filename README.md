@@ -1,10 +1,10 @@
-# World-Weather by Kanam Kafe README
+# World-Weather by KAFE README
 
 A Global City Weather Dashboard
 
 PROJECT OVERVIEW
 ----------------
-World-Weather by Kanam Kafe is a responsive web application that provides current weather conditions and 7-day forecasts for cities around the world.
+World-Weather by KAFE is a responsive web application that provides current weather conditions and 7-day forecasts for cities around the world.
 
 The application lets users browse a worldwide city database, search for specific cities, distinguish cities with the same name, and view live weather information based on each city's geographic coordinates. 
 
@@ -163,7 +163,7 @@ USER EXPERIENCE
 
 The main workflow is:
 
-    Open World-Weather by Kanam Kafe
+    Open World-Weather by KAFE
           |
           v
     Browse worldwide cities
@@ -203,7 +203,7 @@ The interface includes:
 DEPLOYMENT
 ----------
 
-World-Weather by Kanam Kafe is available on (https://kanamkafe.org/world-weather).
+World-Weather by KAFE is available on (https://kanamkafe.org/world-weather).
 
 The project can be maintained through Git and GitHub. After changes are committed and pushed to the connected repository, https://kanamkafe.org/world-weather can then render the updated application.
 
@@ -255,7 +255,7 @@ When rendering:
 PROJECT GOAL
 ------------
 
-World-Weather by Kanam Kafe is intended to be a practical global weather explorer rather than a weather application limited to one country or a short list of cities.
+World-Weather by KAFE is intended to be a practical global weather explorer rather than a weather application limited to one country or a short list of cities.
 
 Its main goals are to make it easy for users to:
 - Discover cities around the world
@@ -269,7 +269,7 @@ Its main goals are to make it easy for users to:
 PROJECT SUMMARY
 ---------------
 
-World-Weather by Kanam Kafe combines a worldwide city database, browser-based search, responsive design, and live weather information from Open-Meteo into one simple web application.
+World-Weather by KAFE combines a worldwide city database, browser-based search, responsive design, and live weather information from Open-Meteo into one simple web application.
 
 The project intentionally uses standard web technologies: HTML, CSS, and JavaScript. This keeps the application lightweight, understandable, maintainable, and straightforward to render on https://kanamkafe.org/world-weather.
 
@@ -277,7 +277,7 @@ The project intentionally uses standard web technologies: HTML, CSS, and JavaScr
 
 © 2026 Moses Ochieng Akuno / Kanam Kafe. All rights reserved.
 
-World-Weather by Kanam Kafe, including its original source code, original artwork, logo, branding, website content, documentation, and original design elements, is protected by applicable copyright and other intellectual-property laws.
+World-Weather by KAFE, including its original source code, original artwork, logo, branding, website content, documentation, and original design elements, is protected by applicable copyright and other intellectual-property laws.
 
 The source code is publicly available on GitHub for viewing and reference. No license is granted to reproduce, distribute, modify, republish, or commercially exploit the original World-Weather source code or original creative materials, except where expressly permitted by the copyright owner or by applicable third-party licenses.
 
@@ -314,4 +314,4 @@ API licensing and subscription terms.
 Weather data attribution is provided in accordance with the applicable Open-Meteo and underlying data-source licensing
 requirements.
 
-END of World-Weather by Kanam Kafe README.
+END of World-Weather by KAFE README.
