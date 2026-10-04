@@ -303,6 +303,14 @@ The project intentionally uses standard web technologies: HTML, CSS, and
 JavaScript. This keeps the application lightweight, understandable,
 maintainable, and straightforward to render on https://kanamkafe.org/world-weather.
 
+# COPYRIGHT NOTICE
+
+© 2026 Moses Ochieng Akuno / Kanam Kafe. All rights reserved.
+
+World Weather and associated original artwork, branding, and content are protected by applicable intellectual-property laws.
+
+The source code is publicly available for viewing on GitHub. No license is granted to reproduce, distribute, modify, or
+commercially exploit the code except as expressly permitted by the copyright owner.
 
 END OF WORLD WEATHER README
 ===========================
