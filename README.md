@@ -279,7 +279,7 @@ The project intentionally uses standard web technologies: HTML, CSS, and JavaScr
 
 World-Weather by KAFE, including its original source code, original artwork, logo, branding, website content, documentation, and original design elements, is protected by applicable copyright and other intellectual-property laws.
 
-The source code is publicly available on GitHub for viewing and reference. No license is granted to reproduce, distribute, modify, republish, or commercially exploit the original World-Weather source code or original creative materials, except where expressly permitted by the copyright owner or by applicable third-party licenses.
+The source code is publicly available on GitHub for viewing and reference. No license is granted to reproduce, distribute, modify, republish, or commercially exploit the original World-Weather by KAFE source code or original creative materials, except where expressly permitted by the copyright owner or by applicable third-party licenses.
 
 Third-party data and services used by the application remain subject to their respective licenses and terms of use.
 
