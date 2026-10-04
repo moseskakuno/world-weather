@@ -275,7 +275,7 @@ The project intentionally uses standard web technologies: HTML, CSS, and JavaScr
 
 # COPYRIGHT NOTICE
 
-© 2026 Moses Ochieng Akuno / Kanam Kafe. All rights reserved.
+© 2026 Moses Ochieng Akuno / KAFE. All rights reserved.
 
 World-Weather by KAFE, including its original source code, original artwork, logo, branding, website content, documentation, and original design elements, is protected by applicable copyright and other intellectual-property laws.
 
